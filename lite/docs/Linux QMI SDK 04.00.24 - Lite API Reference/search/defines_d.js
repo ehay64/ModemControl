@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['sdk_5fvalidate_5finput_5fpack_5fparam',['SDK_VALIDATE_INPUT_PACK_PARAM',['../common_8h.html#af3efcc2945eb88104762634a887a2bc0',1,'common.h']]],
+  ['sdk_5fvalidate_5finput_5fpack_5fparam_5fand_5ffill_5fxid',['SDK_VALIDATE_INPUT_PACK_PARAM_AND_FILL_XID',['../common_8h.html#a17e401b7bd8d0e51d2ff7f1590a4acab',1,'common.h']]],
+  ['sdk_5fvalidate_5finput_5funpack_5fparam',['SDK_VALIDATE_INPUT_UNPACK_PARAM',['../common_8h.html#a320a6497ee06bad4602118f176d2acb3',1,'common.h']]],
+  ['sdu_5fhdr_5flen',['SDU_HDR_LEN',['../common_8h.html#a9acdbbb3f30bae42bbf1af02d8b02b5e',1,'common.h']]],
+  ['slqs_5fmax_5fdying_5fgasp_5fcfg_5fsms_5fcontent_5flength',['SLQS_MAX_DYING_GASP_CFG_SMS_CONTENT_LENGTH',['../dms_8h.html#a3e0a459051da8aae6d1806209f4adcbf',1,'dms.h']]],
+  ['slqs_5fmax_5fdying_5fgasp_5fcfg_5fsms_5fnumber_5flength',['SLQS_MAX_DYING_GASP_CFG_SMS_NUMBER_LENGTH',['../dms_8h.html#a7cff4fb1ae47a2040265e501980b123a',1,'dms.h']]],
+  ['sms_5fconfig_5flen',['SMS_CONFIG_LEN',['../sms_8h.html#ac668b66f32a15e965be052d5882b22d5',1,'sms.h']]],
+  ['sms_5fmax_5fsms_5froutes',['SMS_MAX_SMS_ROUTES',['../sms_8h.html#a0df202c3fed9f18a3be5e0167bd043fa',1,'sms.h']]],
+  ['sms_5fnum_5fof_5fset',['SMS_NUM_OF_SET',['../sms_8h.html#a1dc95adec900694d9451f484d6bdc018',1,'sms.h']]],
+  ['smsc_5ftype_5flen',['SMSC_TYPE_LEN',['../sms_8h.html#a276870f4320fb5d7ab407ad21c7a6ab4',1,'sms.h']]],
+  ['spc_5fsize',['SPC_SIZE',['../dms_8h.html#a5f70775a64fa0eade2257bc7b65d435d',1,'dms.h']]],
+  ['swi_5fapi',['SWI_API',['../SwiDataTypes_8h.html#a4ec1622e5c891aaffa6ced1a0c9c4c61',1,'SwiDataTypes.h']]],
+  ['swi_5finit_5funpack_5fresult_5fvalue',['SWI_INIT_UNPACK_RESULT_VALUE',['../common_8h.html#abf00f8322af9fbf22fdfe4c8daddd0f0',1,'common.h']]],
+  ['swi_5fuint256_5fbit_5foffset',['SWI_UINT256_BIT_OFFSET',['../switype__256bit_8h.html#a4f48db4167d751d3bfa89beb35677b02',1,'switype_256bit.h']]],
+  ['swi_5fuint256_5fbits_5fper_5fword',['SWI_UINT256_BITS_PER_WORD',['../switype__256bit_8h.html#a440d19960ddbf08e375a91dbd940483f',1,'switype_256bit.h']]],
+  ['swi_5fuint256_5fint_5fvalue',['SWI_UINT256_INT_VALUE',['../switype__256bit_8h.html#afe8de2f4007f96328609c545511493b4',1,'switype_256bit.h']]],
+  ['swi_5fuint256_5fword_5fcount',['SWI_UINT256_WORD_COUNT',['../switype__256bit_8h.html#abb76d02b9ac0cce10dd60c57644e606b',1,'switype_256bit.h']]],
+  ['swi_5fuint256_5fword_5foffset',['SWI_UINT256_WORD_OFFSET',['../switype__256bit_8h.html#ad1b1a3cfc7f996df1f3596c511d6b1df',1,'switype_256bit.h']]],
+  ['swiaudio_5fmax_5flen_5fiface_5ftable',['SWIAUDIO_MAX_LEN_IFACE_TABLE',['../swiaudio_8h.html#a5d98b57ca521dd58f337e89af5bc3855',1,'swiaudio.h']]]
+];

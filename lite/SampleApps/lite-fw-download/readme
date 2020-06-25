@@ -1,0 +1,77 @@
+$cd SampleApps/lite_firmware_download/
+$make
+ 
+ check the command user manual
+ -------------
+sudo ./bin/fwdwl-litehostx86_64 --help
+
+Invalid option
+
+App usage:
+
+  <appName> -d <QDL Port> -p <QMI Device> -f <FW path> -h
+
+  -d  --qdl
+         Specifies the QDL port when modem switches to BOOT and HOLD mode to download firmware.
+
+        For example: -d /dev/ttyUSB0
+
+        Defaults to /dev/ttyUSB0 if not specified
+
+  -p  --qmi
+         Specifies the QMI device. For example: -p /dev/qcqmi0
+
+        Defaults to /dev/qcqmi0 if not specified
+
+  -f  --fwpath [folder to firmware images]
+        This specifies the folder location of the firmware images. This option is mandatory.
+        - 9x30: Specify the path containing a carrier FW package (.cwe and .nvu) or an OEM PRI (.nvu)
+  -i  --ignore crash state checking or not.Default value is 0 means crash state checking is required
+          - 0: crash state checking required (default value)
+          - 1: ignore crash state checking
+  -l  --logfile
+        Specific custom log path.
+
+  -b  --blocksize
+        File Read Block Size.
+
+  -m  --modelfamily
+          - 0: Auto Detect (default value)
+          - 1: 9x15 Family
+          - 2: WP9x15 Family
+          - 3: 9x30 Family
+          - 4: 9x07 or 9x50 Family
+          - 5: 9x06 Family
+  -h  --help
+        This option prints the usage instructions.
+
+ 
+ Command to run, depending on the module type, select the correct model family, lite-fw-download supported many kinds of modules,
+ it relies on the user to input a correct family type to proceed the correct path for firmware download, e.g, for
+ - MC73xx            - model family should be 1 
+ - WP750x and WP8548 - model family should be 2 
+ - EM75xx            - model family should be 4
+ - WP7702            - model family should be 5
+ 
+ -------------
+ 
+ e.g, MC7304
+ -------------
+$sudo ./fwdwl-lite -d /dev/ttyUSB1 -p /dev/qcqmi0 -m 1 -f /tmp/MC73xx/
+
+ e.g, WP7504
+ -------------
+$sudo ./fwdwl-lite -d /dev/ttyUSB1 -p /dev/qcqmi0 -m 2 -f /tmp/WP7504/
+
+ e.g, MC74xx
+ -------------
+$sudo ./fwdwl-lite -d /dev/ttyUSB1 -p /dev/qcqmi0 -m 3 -f /tmp/74xx/
+
+
+NOTES:
+-----
+ - lite-fw is designed for use with lite-qmi
+ - Please rewrite GetDeviceMode() and WaitDevicesMode() as needed for your implementation. 
+   These functions depend on the DM port and qcqmiX device being dynamically added by the OS
+   If they are hard coded in the platform, the application will not work.
+ - Comprehensive FW download support is provided by the SDK applications "Firmware_Download" and "MC7xxx_Image_Management"
