@@ -1,11 +1,8 @@
 
-ARCH = hostx86_64
+ARCH = arm
 
-CC = gcc
-CFLAGS = -std=c11 -I ./lite/lite-qmi/inc
-
-CPP = g++
-CPPFLAGS = -std=c++11 -I ./lite/lite-qmi/inc
+CPP = arm-linux-gnueabi-g++
+CPPFLAGS = -static -mfloat-abi=softfp -std=c++11 -I ./lite/lite-qmi/inc
 
 INCLUDE = -L ./lite/lite-qmi/lib/$(ARCH)/ -l lite-qmi -l pthread
 
