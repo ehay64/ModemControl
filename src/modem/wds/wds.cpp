@@ -36,7 +36,7 @@ Wds::Wds(std::string qmiDevice, std::string atDevice)
         printf("Unable to open %s\n", atDevice.c_str());
     }
 
-    this->transcation_id = 1;
+    this->transcationId = 1;
 }
 
 Wds::~Wds()
@@ -46,7 +46,7 @@ Wds::~Wds()
 
 int Wds::getTransactionId(void)
 {
-    return this->transcation_id++;
+    return this->transcationId++;
 }
 
 std::string Wds::getApn(void)
@@ -81,14 +81,14 @@ std::string Wds::getApn(void)
 
     length = read(this->qmiFd, buffer, 2048);
 
-    uint8_t apn_name[256] = {0};
-    uint16_t apn_name_size = 256;
+    uint8_t apnName[256] = {0};
+    uint16_t apnNameSize = 256;
     uint16_t error;
 
     UnPackGetProfileSettingOut profile = {0};
 
-    profile.curProfile.SlqsProfile3GPP.pAPNName = apn_name;
-    profile.curProfile.SlqsProfile3GPP.pAPNnameSize = &apn_name_size;
+    profile.curProfile.SlqsProfile3GPP.pAPNName = apnName;
+    profile.curProfile.SlqsProfile3GPP.pAPNnameSize = &apnNameSize;
     profile.pExtErrCode = &error;
 
     unpack_wds_SLQSGetProfileSettings_t unpack = {0};
@@ -102,7 +102,7 @@ std::string Wds::getApn(void)
         return "none";
     }
 
-    return std::string((char *)apn_name);
+    return std::string((char *)apnName);
 }
 
 int Wds::setApn(std::string apn)
@@ -113,24 +113,24 @@ int Wds::setApn(std::string apn)
 
     request.xid = this->getTransactionId();
 
-    uint8_t apn_name[256] = {0};
-    uint16_t apn_name_size = 0;
+    uint8_t apnName[256] = {0};
+    uint16_t apnNameSize = 0;
 
-    strncpy((char *)apn_name, apn.c_str(), 256);
-    apn_name_size = apn.length();
+    strncpy((char *)apnName, apn.c_str(), 256);
+    apnNameSize = apn.length();
 
     wds_profileInfo profile = {0};
 
-    profile.SlqsProfile3GPP.pAPNName = apn_name;
-    profile.SlqsProfile3GPP.pAPNnameSize = &apn_name_size;
+    profile.SlqsProfile3GPP.pAPNName = apnName;
+    profile.SlqsProfile3GPP.pAPNnameSize = &apnNameSize;
 
-    uint8_t profile_id = 1;
-    uint8_t profile_type = 0;
+    uint8_t profileId = 1;
+    uint8_t profileType = 0;
 
     pack_wds_SLQSCreateProfile_t pack = {0};
 
-    pack.pProfileId = &profile_id;
-    pack.pProfileType = &profile_type;
+    pack.pProfileId = &profileId;
+    pack.pProfileType = &profileType;
     pack.pCurProfile = &profile;
 
     uint8_t buffer[2048] = {0};
@@ -153,12 +153,12 @@ int Wds::setApn(std::string apn)
     length = read(this->qmiFd, buffer, 2048);
 
     PackCreateProfileOut result = {0};
-    uint8_t result_profile_id = 0;
+    uint8_t resultProfileId = 0;
 
     unpack_wds_SLQSCreateProfile_t unpack = {0};
 
     unpack.pCreateProfileOut = &result;
-    unpack.pProfileID = &result_profile_id;
+    unpack.pProfileID = &resultProfileId;
 
     res = unpack_wds_SLQSCreateProfile(buffer, length, &unpack);
     if (res != eQCWWAN_ERR_NONE)
@@ -227,7 +227,7 @@ bool Wds::startAtDataSession(void)
 {
     int res = 0;
 
-    char command[] = "AT!SCACT=1,1\n";
+    char command[] = "AT!SCACT=1\n";
 
     res = write(this->atFd, command, sizeof(command));
     if (res != sizeof(command))
@@ -243,7 +243,7 @@ bool Wds::stopAtDataSession(void)
 {
     int res = 0;
 
-    char command[] = "AT!SCACT=0,1\n";
+    char command[] = "AT!SCACT=0\n";
 
     res = write(this->atFd, command, sizeof(command));
     if (res != sizeof(command))

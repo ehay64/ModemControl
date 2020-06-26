@@ -30,7 +30,7 @@ Nas::Nas(std::string device)
         printf("Unable to configure file descriptor\n");
     }
 
-    this->transcation_id = 1;
+    this->transcationId = 1;
 }
 
 Nas::~Nas()
@@ -40,7 +40,7 @@ Nas::~Nas()
 
 int Nas::getTransactionId(void)
 {
-    return this->transcation_id++;
+    return this->transcationId++;
 }
 
 int Nas::getSignalStrength(void)

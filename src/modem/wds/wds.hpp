@@ -9,7 +9,7 @@ class Wds
     private:
         int qmiFd;
         int atFd;
-        int transcation_id;
+        int transcationId;
 
         int getTransactionId(void);
 

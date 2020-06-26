@@ -10,7 +10,21 @@
 
 int main()
 {
-    std::cout << "Hello world!" << std::endl;
+    std::cout << "Starting modem control..." << std::endl;
+
+    std::cout << "Waiting for enumeration";
+
+    while (true)
+    {
+        if (access(MODEM_QMI_DEVICE, F_OK) == 0)
+        {
+            std::cout << std::endl << "Modem enumerated" << std::endl;
+            break;
+        }
+
+        sleep(1);
+        std::cout << ".";
+    }
 
     Modem modem(MODEM_QMI_DEVICE, MODEM_AT_DEVICE);
 
@@ -18,19 +32,49 @@ int main()
 
     std::cout << "Modem AT device: " << modem.getAtDevice() << std::endl;
 
-    std::cout << "Apn: " << modem.wdsService().getApn() << std::endl;
+    std::cout << "Waiting for network registration";
 
-    std::cout << "Signal Strength: " << modem.nasService().getSignalStrength() << std::endl;
+    while (true)
+    {
+        if (modem.nasService().getRegistrationState())
+        {
+            std::cout << std::endl << "Modem registered to network" << std::endl;
+            break;
+        }
+
+        sleep(1);
+        std::cout << ".";
+    }
+
+    std::cout << "Waiting for packet switched attachment";
+
+    while (true)
+    {
+        if (modem.nasService().getAttachmentState())
+        {
+            std::cout << std::endl << "Modem attached to packet switched network" << std::endl;
+            break;
+        }
+
+        sleep(1);
+        std::cout << ".";
+    }
 
     std::cout << "Network: " << modem.nasService().getNetworkName() << std::endl;
+    std::cout << "RSSI: " << modem.nasService().getSignalStrength() << std::endl;
+    std::cout << "APN: " << modem.wdsService().getApn() << std::endl;
 
-    std::cout << "Registered: " << modem.nasService().getRegistrationState() << std::endl;
+    std::cout << "Starting data session..." << std::endl;
 
-    std::cout << "Attached: " << modem.nasService().getAttachmentState() << std::endl;
-
-    std::cout << "Auto Connect: " << modem.wdsService().setAutoConnect(false) << std::endl;
-
-    std::cout << "Start Data Session: " << modem.wdsService().startAtDataSession() << std::endl;
+    if (modem.wdsService().startAtDataSession())
+    {
+        std::cout << "Data session started, exiting" << std::endl;
+    }
+    else
+    {
+        std::cout << "Unable to start data session, exiting" << std::endl;
+        return -1;
+    }
 
     return 0;
 }

@@ -10,7 +10,7 @@ class Nas
 {
     private:
         int fd;
-        int transcation_id;
+        int transcationId;
 
         int getTransactionId(void);
 
