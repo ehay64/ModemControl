@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <string.h>
 
+#include <iostream>
+
 #include <qmerrno.h>
 #include <common.h>
 #include <wds.h>
@@ -21,19 +23,19 @@ Wds::Wds(std::string qmiDevice, std::string atDevice)
     this->qmiFd = open(qmiDevice.c_str(), O_RDWR);
     if (this->qmiFd == -1)
     {
-        printf("Unable to open %s\n", qmiDevice.c_str());
+        std::cerr << "Unable to open " << qmiDevice << std::endl;
     }
 
     status = ioctl(this->qmiFd, QMI_IOCTL_GET_SERVICE_FILE, eWDS);
     if (status != 0)
     {
-        printf("Unable to configure file descriptor\n");
+        std::cerr << "Unable to configure file descriptor" << std::endl;
     }
 
     this->atFd = open(atDevice.c_str(), O_RDWR);
     if (this->atFd == -1)
     {
-        printf("Unable to open %s\n", atDevice.c_str());
+        std::cerr << "Unable to open " << atDevice << std::endl;
     }
 
     this->transcationId = 1;
@@ -68,15 +70,15 @@ std::string Wds::getApn(void)
     res = pack_wds_SLQSGetProfileSettings(&request, buffer, &length, &pack);
     if (res != eQCWWAN_ERR_NONE)
     {
-        printf("Unable to pack SLQSGetProfileSettings: %i\n", res);
-        return "none";
+        std::cerr << "Unable to pack SLQSGetProfileSettings: " << res << std::endl;
+        return "unknown";
     }
 
     res = write(this->qmiFd, buffer, length);
     if (res != length)
     {
-        printf("Unable to write entire buffer\n");
-        return "none";
+        std::cerr << "Unable to write entire buffer" << std::endl;
+        return "unknown";
     }
 
     length = read(this->qmiFd, buffer, 2048);
@@ -98,8 +100,8 @@ std::string Wds::getApn(void)
     res = unpack_wds_SLQSGetProfileSettings(buffer, length, &unpack);
     if (res != eQCWWAN_ERR_NONE)
     {
-        printf("Unable to unpack SLQSGetProfileSettings: %i\n", res);
-        return "none";
+        std::cerr << "Unable to unpack SLQSGetProfileSettings: " << res << std::endl;
+        return "unknown";
     }
 
     return std::string((char *)apnName);
@@ -139,14 +141,14 @@ int Wds::setApn(std::string apn)
     res = pack_wds_SLQSCreateProfile(&request, buffer, &length, &pack);
     if (res != eQCWWAN_ERR_NONE)
     {
-        printf("Unable to pack SLQSCreateProfile: %i\n", res);
+        std::cerr << "Unable to pack SLQSCreateProfile: " << res << std::endl;
         return -1;
     }
 
     res = write(this->qmiFd, buffer, length);
     if (res != length)
     {
-        printf("Unable to write entire buffer\n");
+        std::cerr << "Unable to write entire buffer" << std::endl;
         return -1;
     }
 
@@ -163,7 +165,7 @@ int Wds::setApn(std::string apn)
     res = unpack_wds_SLQSCreateProfile(buffer, length, &unpack);
     if (res != eQCWWAN_ERR_NONE)
     {
-        printf("Unable to unpack SLQSGetProfileSettings: %i\n", res);
+        std::cerr << "Unable to unpack SLQSGetProfileSettings: " << res << std::endl;
         return -1;
     }
 
@@ -186,14 +188,14 @@ bool Wds::startDataSession(void)
     res = pack_wds_SLQSStartDataSession(&request, buffer, &length, &pack);
     if (res != eQCWWAN_ERR_NONE)
     {
-        printf("Unable to pack SLQSStartDataSession: %i\n", res);
+        std::cerr << "Unable to pack SLQSStartDataSession: " << res << std::endl;
         return false;
     }
 
     res = write(this->qmiFd, buffer, length);
     if (res != length)
     {
-        printf("Unable to write entire buffer\n");
+        std::cerr << "Unable to write entire buffer" << std::endl;
         return -1;
     }
 
@@ -214,11 +216,11 @@ bool Wds::startDataSession(void)
     res = unpack_wds_SLQSStartDataSession(buffer, length, &unpack);
     if (res != eQCWWAN_ERR_NONE)
     {
-        printf("Unable to unpack SLQSStartDataSession: %i\n", res);
+        std::cerr << "Unable to unpack SLQSStartDataSession: " << res << std::endl;
         return false;
     }
 
-    printf("Session Id: %i\n", sessionId);
+    std::cerr << "Session Id: " << sessionId << std::endl;
 
     return true;
 }
@@ -232,7 +234,7 @@ bool Wds::startAtDataSession(void)
     res = write(this->atFd, command, sizeof(command));
     if (res != sizeof(command))
     {
-        printf("Unable to send AT command: %s\n", command);
+        std::cerr << "Unable to send AT command: " << command << std::endl;
         return false;
     }
 
@@ -248,7 +250,7 @@ bool Wds::stopAtDataSession(void)
     res = write(this->atFd, command, sizeof(command));
     if (res != sizeof(command))
     {
-        printf("Unable to send AT command: %s\n", command);
+        std::cerr << "Unable to send AT command: " << command << std::endl;
         return false;
     }
 
@@ -282,14 +284,14 @@ bool Wds::setAutoConnect(bool autoConnect)
     res = pack_wds_SetAutoconnect(&request, buffer, &length, &pack);
     if (res != eQCWWAN_ERR_NONE)
     {
-        printf("Unable to pack SetAutoconnect: %i\n", res);
+        std::cerr << "Unable to pack SetAutoconnect: " << res << std::endl;
         return false;
     }
 
     res = write(this->qmiFd, buffer, length);
     if (res != length)
     {
-        printf("Unable to write entire buffer\n");
+        std::cerr << "Unable to write entire buffer" << std::endl;
         return -1;
     }
 
@@ -304,7 +306,7 @@ bool Wds::setAutoConnect(bool autoConnect)
     }
     else if (res != eQCWWAN_ERR_NONE)
     {
-        printf("Unable to unpack SetAutoconnect: %i\n", res);
+        std::cerr << "Unable to unpack SetAutoconnect: " << res << std::endl;
         return false;
     }
 

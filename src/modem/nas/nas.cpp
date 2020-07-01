@@ -6,6 +6,8 @@
 #include <unistd.h>
 #include <string.h>
 
+#include <iostream>
+
 #include <qmerrno.h>
 #include <common.h>
 #include <nas.h>
@@ -21,13 +23,13 @@ Nas::Nas(std::string device)
     this->fd = open(device.c_str(), O_RDWR);
     if (this->fd == -1)
     {
-        printf("Unable to open %s\n", device.c_str());
+        std::cerr << "Unable to open " << device << std::endl;
     }
 
     status = ioctl(this->fd, QMI_IOCTL_GET_SERVICE_FILE, eNAS);
     if (status != 0)
     {
-        printf("Unable to configure file descriptor\n");
+        std::cerr << "Unable to configure file descriptor" << std::endl;
     }
 
     this->transcationId = 1;
@@ -57,14 +59,14 @@ int Nas::getSignalStrength(void)
     res = pack_nas_GetSignalStrengths(&request, buffer, &length);
     if (res != eQCWWAN_ERR_NONE)
     {
-        printf("Unable to pack GetSignalStrengths: %i\n", res);
+        std::cerr << "Unable to pack GetSignalStrengths: " << res << std::endl;
         return 0;
     }
 
     res = write(this->fd, buffer, length);
     if (res != length)
     {
-        printf("Unable to write entire buffer\n");
+        std::cerr << "Unable to write entire buffer" << std::endl;
         return 0;
     }
 
@@ -75,7 +77,7 @@ int Nas::getSignalStrength(void)
     res = unpack_nas_GetSignalStrengths(buffer, length, &unpack);
     if (res != eQCWWAN_ERR_NONE)
     {
-        printf("Unable to unpack GetSignalStrengths: %i\n", res);
+        std::cerr << "Unable to unpack GetSignalStrengths: " << res << std::endl;
         return 0;
     }
 
@@ -96,14 +98,14 @@ std::string Nas::getNetworkName(void)
     res = pack_nas_GetHomeNetwork(&request, buffer, &length);
     if (res != eQCWWAN_ERR_NONE)
     {
-        printf("Unable to pack GetHomeNetwork: %i\n", res);
+        std::cerr << "Unable to pack GetHomeNetwork: " << res << std::endl;
         return "unknown";
     }
 
     res = write(this->fd, buffer, length);
     if (res != length)
     {
-        printf("Unable to write entire buffer\n");
+        std::cerr << "Unable to write entire buffer" << std::endl;
         return "unknown";
     }
 
@@ -114,7 +116,7 @@ std::string Nas::getNetworkName(void)
     res = unpack_nas_GetHomeNetwork(buffer, length, &unpack);
     if (res != eQCWWAN_ERR_NONE)
     {
-        printf("Unable to unpack GetHomeNetwork: %i\n", res);
+        std::cerr << "Unable to unpack GetHomeNetwork: " << res << std::endl;
         return "unknown";
     }
 
@@ -135,14 +137,14 @@ int Nas::getServingNetwork(unpack_nas_GetServingNetwork_t *unpack)
     res = pack_nas_GetServingNetwork(&request, buffer, &length);
     if (res != eQCWWAN_ERR_NONE)
     {
-        printf("Unable to pack GetServingNetwork: %i\n", res);
+        std::cerr << "Unable to pack GetServingNetwork: " << res << std::endl;
         return -1;
     }
 
     res = write(this->fd, buffer, length);
     if (res != length)
     {
-        printf("Unable to write entire buffer\n");
+        std::cerr << "Unable to write entire buffer" << std::endl;
         return -1;
     }
 
@@ -151,7 +153,7 @@ int Nas::getServingNetwork(unpack_nas_GetServingNetwork_t *unpack)
     res = unpack_nas_GetServingNetwork(buffer, length, unpack);
     if (res != eQCWWAN_ERR_NONE)
     {
-        printf("Unable to unpack GetServingNetwork: %i\n", res);
+        std::cerr << "Unable to unpack GetServingNetwork: " << res << std::endl;
         return -1;
     }
 
@@ -167,7 +169,7 @@ bool Nas::getRegistrationState(void)
     res = this->getServingNetwork(&unpack);
     if (res != 0)
     {
-        printf("Unable to GetServingNetwork\n");
+        std::cerr << "Unable to GetServingNetwork" << std::endl;
         return false;
     }
 
@@ -188,7 +190,7 @@ bool Nas::getAttachmentState(void)
     res = this->getServingNetwork(&unpack);
     if (res != 0)
     {
-        printf("Unable to GetServingNetwork\n");
+        std::cerr << "Unable to GetServingNetwork" << std::endl;
         return false;
     }
 
