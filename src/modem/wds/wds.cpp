@@ -107,7 +107,7 @@ std::string Wds::getApn(void)
     return std::string((char *)apnName);
 }
 
-int Wds::setApn(std::string apn)
+bool Wds::setApn(std::string apn)
 {
     int res = 0;
 
@@ -142,14 +142,14 @@ int Wds::setApn(std::string apn)
     if (res != eQCWWAN_ERR_NONE)
     {
         std::cerr << "Unable to pack SLQSCreateProfile: " << res << std::endl;
-        return -1;
+        return false;
     }
 
     res = write(this->qmiFd, buffer, length);
     if (res != length)
     {
         std::cerr << "Unable to write entire buffer" << std::endl;
-        return -1;
+        return false;
     }
 
     length = read(this->qmiFd, buffer, 2048);
@@ -166,10 +166,10 @@ int Wds::setApn(std::string apn)
     if (res != eQCWWAN_ERR_NONE)
     {
         std::cerr << "Unable to unpack SLQSGetProfileSettings: " << res << std::endl;
-        return -1;
+        return false;
     }
 
-    return 0;
+    return true;
 }
 
 bool Wds::startDataSession(void)

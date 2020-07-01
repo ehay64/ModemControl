@@ -20,7 +20,7 @@ class Wds
 
         std::string getApn(void);
 
-        int setApn(std::string apn);
+        bool setApn(std::string apn);
 
         bool startDataSession(void);
 
